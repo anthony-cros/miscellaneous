@@ -4,6 +4,8 @@
 
 input_dir=${1?} && shift
 
+vcf_version="v4.1" # TODO: as param
+
 function process() {
     input_file=${1?} && shift
   allele_index=${1?} && shift
@@ -15,7 +17,7 @@ function process() {
 }
 
 {
-  echo -e "##fileformat=VCFv4.1\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
+  echo -e "##fileformat=VCF${vcf_version?}\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO"
   for f in $(ls ${input_dir?}/*.maf.gz | sort); do
     zcat $f | tail -n+3 | process $f 12 # 12=Tumor_Seq_Allele1
     zcat $f | tail -n+3 | process $f 13 # 13=Tumor_Seq_Allele2
